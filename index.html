@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Arelith Players</title>
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 style-src 'self' 'unsafe-inline';
+                 img-src 'self' data: https:;
+                 script-src 'self' https://cdn.jsdelivr.net;
+                 connect-src 'self' https://astrolabe.nwnarelith.com">
+  <style>
+  :root { --bg:#0b0f17; --card:#121826; --muted:#94a3b8; --text:#e2e8f0; }
+  * { box-sizing:border-box; }
+  html, body { height:100%; }
+  body { margin:0; background:var(--bg); color:var(--text);
+         font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+  .wrap { display:flex; height:100vh; width:100vw; overflow:hidden; }
+
+  aside { width:300px; background:#0e1422; border-right:1px solid #1e293b; padding:16px; overflow:auto; }
+  aside input, aside select, aside button, aside textarea { width:100%; }
+  main  { flex:1; overflow:auto; padding:16px; min-width:640px; }
+
+  h1 { margin:0 0 12px; font-size:18px; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+  .card { background:var(--card); border:1px solid #1e293b; border-radius:10px; padding:12px; margin-bottom:16px; }
+  label { display:block; font-size:12px; color:var(--muted); margin-bottom:4px; }
+  input, select, button, textarea {
+    background:#0e1422; border:1px solid #233249; color:var(--text);
+    padding:8px 10px; border-radius:8px; outline:none;
+  }
+  button.primary { background:#1b2b44; border-color:#264569; cursor:pointer; }
+  button.primary:hover{ background:#223558; }
+  .tabs { display:flex; gap:8px; margin-top:12px; }
+  .tab-btn { background:#0e1422; border:1px solid #1f2a3d; padding:8px 10px; border-radius:8px; cursor:pointer; }
+  .tab-btn.active { border-color:#2b4368; background:#132137; color:#bfe2ff; }
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .muted { color:var(--muted); }
+  .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; margin-left:6px; border:1px solid #223549; }
+  .list { display:flex; flex-wrap:wrap; gap:6px; }
+  .chip { border:1px solid #21324a; padding:6px 8px; border-radius:999px; background:#0f1728; }
+  .chip.removable {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding-right: 4px;
+  }
+  .chip.removable button {
+    background: none;
+    border: none;
+    color: #bfaaff;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0 4px;
+    margin-left: 2px;
+    border-radius: 50%;
+    line-height: 1;
+    height: 18px;
+    width: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .chip.removable button:hover {
+    background: #2a1f4a;
+    color: #fff;
+  }
+  .toggle { display:flex; align-items:center; gap:6px; }
+  .empty { color:var(--muted); padding:6px 0; }
+
+  /* server chip over-cap (players > 45) */
+  .chip.overcap { background-color:red; color:white; }
+
+  /* highlight matches in visible players list */
+  .chip.hit { background:#2a1f4a; border-color:#6b5bd4; color:#e8e6ff; }
+
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <aside>
+      <h1>Arelith Players</h1>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="live">Live</button>
+      </div>
+
+      <!-- Auth -->
+      <div class="card">
+        <label>User Session (board cookie)</label>
+        <input id="userSession" type="text" placeholder="phpbb user-session">
+        <div class="row" style="margin-top:8px;">
+          <button id="saveTokenBtn" class="primary">Save</button>
+          <button id="pollNowBtn" class="primary">Poll now</button>
+        </div>
+        <div id="liveStatus" class="muted" style="margin-top:8px; min-height:18px;"></div>
+      </div>
+
+      <!-- Live filters -->
+      <div class="card">
+        <label>Filtered Names</label>
+        <div id="filterChips" class="list" style="margin-bottom:8px;"></div>
+        <div class="row">
+          <input id="filterInput" type="text" placeholder="Type a name and press Enter">
+          <button id="addFilterBtn" class="primary" style="width:80px;">Add</button>
+        </div>
+        <div class="row" style="margin-top:8px;">
+          <label class="toggle">
+            <input id="exactMatch" type="checkbox">
+            <span>Exact match</span>
+          </label>
+          <label class="toggle">
+            <input id="showFilteredOnly" type="checkbox">
+            <span>Show only filtered</span>
+          </label>
+        </div>
+        <div class="muted" style="margin-top:6px;font-size:12px;">
+          Plays a ding when any <em>filtered</em> name comes online.
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <!-- LIVE -->
+      <section class="panel active" id="panel-live">
+        <div class="card">
+          <div class="row" style="align-items:center; justify-content:space-between;">
+            <div>
+              <strong>Visible Players</strong>
+              <span id="visibleCount" class="badge good">0</span>
+              <span class="muted">Hidden:</span> <span id="hiddenCount" class="badge warn">0</span>
+            </div>
+            <div id="lastUpdated" class="muted"></div>
+          </div>
+          <div id="playersList" class="list" style="margin-top:8px;"></div>
+        </div>
+
+        <div class="card">
+          <strong>Servers</strong>
+          <div id="serversList" class="list" style="max-height: calc(100vh - 280px); overflow:auto;"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <audio id="ding" preload="auto">
+    <source src="assets/ding.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="assets/renderer.js"></script>
+</body>
+</html>

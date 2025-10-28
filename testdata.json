@@ -1,0 +1,111 @@
+{
+    "servers": [
+        {
+            "id": 1,
+            "name": "Surface",
+            "address": "game.nwnarelith.com",
+            "port": 5123,
+            "playerCount": 38,
+            "state": 8,
+            "startup": 1761414677
+        },
+        {
+            "id": 2,
+            "name": "Cordor and Planes",
+            "address": "game.nwnarelith.com",
+            "port": 5122,
+            "playerCount": 50,
+            "state": 8,
+            "startup": 1761414671
+        },
+        {
+            "id": 6,
+            "name": "Underdark",
+            "address": "game.nwnarelith.com",
+            "port": 5124,
+            "playerCount": 13,
+            "state": 8,
+            "startup": 1761414674
+        },
+        {
+            "id": 8,
+            "name": "Distant Shores",
+            "address": "game.nwnarelith.com",
+            "port": 5121,
+            "playerCount": 64,
+            "state": 8,
+            "startup": 1761414727
+        },
+        {
+            "id": 9,
+            "name": "Guldorand",
+            "address": "game.nwnarelith.com",
+            "port": 5125,
+            "playerCount": 25,
+            "state": 8,
+            "startup": 1761414669
+        },
+        {
+            "id": 5,
+            "name": "Arelith - PGCC",
+            "address": "arena.arelith.com",
+            "port": 5123,
+            "playerCount": 3,
+            "state": 8,
+            "startup": 1761429674
+        }
+    ],
+    "players": [
+        {
+            "visibleName": " Arête  Mallpockney",
+            "portraitResRef": "/images/portraits/po_boy2_.jpg",
+            "options": 0
+        },
+        {
+            "visibleName": "Abigail",
+            "portraitResRef": "/images/portraits/po_hu_f_99_.jpg",
+            "options": 0
+        },
+        {
+            "visibleName": "Ada",
+            "portraitResRef": "/images/portraits/po_clswizard_.jpg",
+            "options": 0
+        },
+        {
+            "visibleName": "Aeryk Hrókvaldsson",
+            "portraitResRef": "/images/portraits/po_wyvern_.jpg",
+            "options": 0
+        },
+        {
+            "visibleName": "Alastor Briars",
+            "portraitResRef": "https://raw.githubusercontent.com/RegnantPhoenix/playerportraitpack/master/sources/male/po_m_hu251_m.png",
+            "options": 0
+        },
+        {
+            "visibleName": "Alen Aestine",
+            "portraitResRef": "/images/portraits/po_clsfight_.jpg",
+            "options": 0
+        },
+        {
+            "visibleName": "Alis Dionadair-Grantz",
+            "portraitResRef": "https://raw.githubusercontent.com/RegnantPhoenix/playerportraitpack/master/sources/female/po_f_hu134_m.png",
+            "options": 25
+        },
+        {
+            "visibleName": "Alita Morgenthal",
+            "portraitResRef": "/images/portraits/po_clspaladin_.jpg",
+            "options": 0
+        },
+        {
+            "visibleName": "Aluris Sh'tharath",
+            "portraitResRef": "https://raw.githubusercontent.com/RegnantPhoenix/playerportraitpack/master/sources/female/po_f_wg6_m.png",
+            "options": 0
+        },
+        {
+            "visibleName": "Amara",
+            "portraitResRef": "https://raw.githubusercontent.com/RegnantPhoenix/playerportraitpack/master/sources/female/po_f_el11_m.png",
+            "options": 0
+        }
+    ],
+    "hidden": 13
+}

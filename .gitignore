@@ -1,0 +1,15 @@
+node/
+node_modules/
+NUL
+node/
+build/
+dist/
+.cache/
+.parcel-cache/
+.next/
+.vite/
+coverage/
+out/
+tmp/
+.env*
+oldlogv/
